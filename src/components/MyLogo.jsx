@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"; // 1. Import Link
-import Logo from "../assets/logo/52-bazaar-logo.webp";
+// import Logo from "../assets/logo/52-bazaar-logo.webp";
+import Logo from "../assets/logo/logo.png";
 
 const MyLogo = () => {
   return (

@@ -1,3 +1,4 @@
+import { useContext, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 // import Navbar from "./components/Navbar";
 
@@ -26,12 +27,21 @@ import SalesReport from "./pages/amdin/reports/SalesReport";
 import OrderReport from "./pages/amdin/reports/OrderReport";
 import ScheduledReports from "./pages/amdin/reports/ScheduledReports";
 import NotFound from "./pages/amdin/not found/NotFound";
+import { AuthContext } from "./context/AuthContext";
 
 // Dummy components for example
 
 function App() {
+  {/* AuthContext */}
+  const { loadUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    loadUser();
+  }, []);
+  
   return (
     <div>
+
       {/* <Navbar /> This stays visible on all pages */}
 
       <Routes>

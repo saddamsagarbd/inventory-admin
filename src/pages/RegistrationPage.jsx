@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Eye,
   EyeOff,
@@ -10,29 +10,72 @@ import {
   ArrowRight,
   MapPin,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MyLogo from "../components/MyLogo";
+import { AuthContext } from "../context/AuthContext";
 
 export default function RegistrationPage() {
+  const { registration, loading, error, clearError } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isValid, setIsValid] = useState(true);
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
     phone: "",
-    address: "",
+    // address: "",
     password: "",
     confirmPassword: "",
-    agreeToTerms: false,
-    newsletter: false,
+    // agreeToTerms: false,
+    // newsletter: false,
   });
 
+  const [formError, setFormError] = useState("");
+
   const handleChange = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData((prev) => {
+      const updatedData = { ...prev, [field]: value };
+
+      // Only validate when password or confirmPassword changes
+      if (field === "password" || field === "confirmPassword") {
+        const passwordsMatch = 
+          updatedData.password && 
+          updatedData.confirmPassword && 
+          updatedData.password === updatedData.confirmPassword;
+
+        setIsValid(passwordsMatch);
+      }
+
+      return updatedData;
+    });
+
+    // Clear errors when user starts typing
+    if (formError) setFormError("");
+    if (error) clearError?.();
   };
 
-  const handleRegister = () => {
+  const handleRegister = async (e) => {
     console.log("Register:", formData);
+
+    e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      setFormError("Passwords do not match");
+      return;
+    }
+
+    try {
+      await registration(formData);
+
+      alert("Registration successful! You can now login.");
+      // Optionally redirect to login page
+      navigate("/");
+
+    } catch (err) {
+      // Error is already handled in context, but you can show it here too
+      console.error(err);
+    }
   };
 
   return (
@@ -49,7 +92,7 @@ export default function RegistrationPage() {
               Create Account
             </h2>
             <p className="text-gray-600">
-              Sign up to start shopping fresh organic products
+              Sign up to start automate your business
             </p>
           </div>
 
@@ -66,8 +109,8 @@ export default function RegistrationPage() {
                 </div>
                 <input
                   type="text"
-                  value={formData.fullName}
-                  onChange={(e) => handleChange("fullName", e.target.value)}
+                  value={formData.name}
+                  onChange={(e) => handleChange("name", e.target.value)}
                   placeholder="Enter your full name"
                   className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-(--color-primary) focus:outline-none transition-colors duration-300 text-gray-900"
                 />
@@ -113,7 +156,7 @@ export default function RegistrationPage() {
             </div>
 
             {/* Address Input */}
-            <div>
+            {/* <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Delivery Address
               </label>
@@ -129,7 +172,7 @@ export default function RegistrationPage() {
                   className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-(--color-primary) focus:outline-none transition-colors duration-300 text-gray-900 resize-none"
                 />
               </div>
-            </div>
+            </div> */}
 
             {/* Password Input */}
             <div>
@@ -192,7 +235,7 @@ export default function RegistrationPage() {
             </div>
 
             {/* Terms and Newsletter */}
-            <div className="space-y-3 pt-2">
+            {/* <div className="space-y-3 pt-2">
               <label className="flex items-start cursor-pointer">
                 <input
                   type="checkbox"
@@ -230,14 +273,15 @@ export default function RegistrationPage() {
                   Subscribe to our newsletter for exclusive offers and updates
                 </span>
               </label>
-            </div>
+            </div> */}
 
             {/* Register Button */}
             <button
               onClick={handleRegister}
-              className="w-full bg-gradient-to-r from-(--color-primary) to-(--color-primary-hover) text-white font-semibold py-4 rounded-xl hover:from-(--color-primary-hover) hover:to-(--color-primary) transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 mt-2"
+              disabled={!isValid}
+              className="w-full bg-linear-to-r from-(--color-primary) to-(--color-primary-hover) text-white font-semibold py-4 rounded-xl hover:from-(--color-primary-hover) hover:to-(--color-primary) transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 mt-2"
             >
-              Create Account
+              Register
               <ArrowRight className="w-5 h-5" />
             </button>
 

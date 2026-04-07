@@ -1,19 +1,42 @@
-import React, { use, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import MyLogo from "../components/MyLogo";
+import { AuthContext } from "../context/AuthContext";
 
 export default function LoginPage() {
   const navigat = useNavigate();
+  const { login, loading, error, clearError } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [formError, setFormError] = useState('');
 
-  const handleLogin = () => {
-    console.log("Login:", { email, password, rememberMe });
-    // Simulate successful login and navigate to dashboard
-    navigat("/admin/dashboard");
+  const handleLogin = async (e) => {
+    console.log("Login:", { username, password, rememberMe });
+
+    e.preventDefault();
+
+    if (username == "" || password == "") {
+      setFormError("Credential does not match");
+      return;
+    }
+
+    try {
+      const result = await login({
+        username, password
+      });
+
+      console.log(result.data);
+
+      if(result.token){
+        // Simulate successful login and navigate to dashboard
+        navigat("/admin/dashboard");
+      }
+    } catch (error) {
+      setFormError(error.message);
+    }
   };
 
   return (
@@ -39,7 +62,7 @@ export default function LoginPage() {
             {/* Email */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Email Address
+                Username
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -47,10 +70,10 @@ export default function LoginPage() {
                 </div>
                 <input
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:border-green-500 focus:outline-none"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Enter your email/phone number"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:border-green-500 focus:outline-none text-gray-900"
                 />
               </div>
             </div>
@@ -69,7 +92,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-xl focus:border-green-500 focus:outline-none"
+                  className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-xl focus:border-green-500 focus:outline-none text-gray-900"
                 />
                 <button
                   type="button"
