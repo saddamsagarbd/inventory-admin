@@ -26,6 +26,7 @@ import SalesReport from "./pages/amdin/reports/SalesReport";
 import OrderReport from "./pages/amdin/reports/OrderReport";
 import ScheduledReports from "./pages/amdin/reports/ScheduledReports";
 import NotFound from "./pages/amdin/not found/NotFound";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // Dummy components for example
 
@@ -42,39 +43,41 @@ function App() {
         <Route path="/register" element={<RegistrationPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         {/* ✅ ADMIN ROUTES */}
-        <Route path="/admin" element={<AdminWrapper />}>
-          <Route path="dashboard" element={<DashboardPage />} />
-          <Route path="categories" element={<CategoryManagement />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/admin" element={<AdminWrapper />}>
+            <Route path="dashboard" element={<DashboardPage />} />
+            <Route path="categories" element={<CategoryManagement />} />
 
-          {/* 🔥 Product Routes */}
-          <Route path="products" element={<ProductList />} />
-          <Route path="products/add" element={<AddEditProduct />} />
-          <Route path="products/edit/:id" element={<AddEditProduct />} />
-          <Route path="products/:id" element={<ProductDetails />} />
-          {/* 🔥 Inventory Routes */}
-          <Route path="inventory" element={<Inventory />} />
-          <Route path="inventory/low-stock" element={<LowStockAlerts />} />
+            {/* 🔥 Product Routes */}
+            <Route path="products" element={<ProductList />} />
+            <Route path="products/add" element={<AddEditProduct />} />
+            <Route path="products/edit/:id" element={<AddEditProduct />} />
+            <Route path="products/:id" element={<ProductDetails />} />
+            {/* 🔥 Inventory Routes */}
+            <Route path="inventory" element={<Inventory />} />
+            <Route path="inventory/low-stock" element={<LowStockAlerts />} />
 
-          {/* 🔥 Order Routes */}
-          <Route path="orders" element={<Orders />} />
-          <Route path="orders/:id" element={<OrderDetailsPage />} />
-          {/* 🔥 Customer Routes */}
-          <Route path="customers" element={<Customers />} />
-          <Route path="customers/:id" element={<CustomerDetailsPage />} />
-          <Route path="customers/add" element={<CustomerFormPage />} />
-          <Route path="customers/edit/:id" element={<CustomerFormPage />} />
-          {/* 🔥 Payment Routes */}
-          <Route path="payments" element={<PaymentList />} />
-          <Route path="payments/:id" element={<PaymentDetails />} />
-          <Route path="payments/:id/refund" element={<RefundManagement />} />
+            {/* 🔥 Order Routes */}
+            <Route path="orders" element={<Orders />} />
+            <Route path="orders/:id" element={<OrderDetailsPage />} />
+            {/* 🔥 Customer Routes */}
+            <Route path="customers" element={<Customers />} />
+            <Route path="customers/:id" element={<CustomerDetailsPage />} />
+            <Route path="customers/add" element={<CustomerFormPage />} />
+            <Route path="customers/edit/:id" element={<CustomerFormPage />} />
+            {/* 🔥 Payment Routes */}
+            <Route path="payments" element={<PaymentList />} />
+            <Route path="payments/:id" element={<PaymentDetails />} />
+            <Route path="payments/:id/refund" element={<RefundManagement />} />
 
-          <Route path="reports" element={<ReportsDashboard />}>
-            <Route index element={<SalesReport />} />
-            <Route path="sales" element={<SalesReport />} />
-            <Route path="orders" element={<OrderReport />} />
-            <Route path="scheduled" element={<ScheduledReports />} />
+            <Route path="reports" element={<ReportsDashboard />}>
+              <Route index element={<SalesReport />} />
+              <Route path="sales" element={<SalesReport />} />
+              <Route path="orders" element={<OrderReport />} />
+              <Route path="scheduled" element={<ScheduledReports />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
           </Route>
-          <Route path="*" element={<NotFound />} />
         </Route>
         {/* 404 Not Found Route */}
       </Routes>

@@ -15,7 +15,7 @@ import MyLogo from "../components/MyLogo";
 import { AuthContext } from "../context/AuthContext";
 
 export default function RegistrationPage() {
-  const { registration, loading, error, clearError } = useContext(AuthContext);
+  const { isAuthenticated, registration, loading, error, clearError } = useContext(AuthContext);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -77,6 +77,10 @@ export default function RegistrationPage() {
       console.error(err);
     }
   };
+
+  if(isAuthenticated){
+    navigate('/admin/dashboard');
+  }
 
   return (
     <div className="min-h-screen w-full bg-white">

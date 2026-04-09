@@ -1,98 +1,89 @@
-import { useState } from "react";
-import axios from 'axios';
+import { useState, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
+import api from '../config/axiosConfig';
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [token, setToken] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    const api = axios.create({
-        baseURL: import.meta.env.VITE_API_URL,
-        withCredentials: true,        // ← This allows cookies to be sent/received
-        headers: {
-        "Content-Type": "application/json",
-        },
-    });
+    // Axios interceptor
+    useEffect(() => {
+        const interceptor = api.interceptors.request.use(
+            (config) => {
+                if (token) config.headers.Authorization = `Bearer ${token}`;
+                return config;
+            },
+            (err) => Promise.reject(err)
+        );
+        return () => api.interceptors.request.eject(interceptor);
+    }, [token]);
 
+    // Run auth check on app start / refresh
+    useEffect(() => {
+        checkAuthStatus();
+    }, []);
 
-    const registration = async (data) => {
-        setLoading(true);
-        setError(null);
-
+    const checkAuthStatus = async () => {
         try {
-            const result = await api.post(`/register`, data);
+            setLoading(true);
+            const response = await api.get('/auth/verify');
 
-            console.log("Registration successful:", result.data);
+            console.log("🔍 /auth/verify response:", response.data);
 
-            if(result.data.user) setUser(result.data.user);
-
-            return result.data;
-
-        } catch (error) {
-            const errorMessage = 
-            error.response?.data?.message || 
-            error.message || 
-            "Registration failed";
-
-            setError(errorMessage);
-            throw new Error(errorMessage);
+            if (response.data?.isAuthenticated && response.data?.user) {
+                setIsAuthenticated(true);
+                setUser(response.data.user);
+                if (response.data.token) {
+                    setToken(response.data.token);
+                }
+            } else {
+                resetAuth();
+            }
+        } catch (err) {
+            console.error("Auth check failed:", err.response?.data || err.message);
+            resetAuth();
         } finally {
             setLoading(false);
         }
+    };
 
-    }
+    const resetAuth = () => {
+        setIsAuthenticated(false);
+        setUser(null);
+        setToken(null);
+    };
 
     const login = async (data) => {
-
         setLoading(true);
         setError(null);
-
         try {
-            const result = await api.post(`/login`, data);
-
-            // await fetchCurrentUser();
-
-            return result.data;
-
-        } catch (error) {
-            const errorMessage = 
-            error.response?.data?.message || 
-            error.message || 
-            "Registration failed";
-
-            setError(errorMessage);
-            throw new Error(errorMessage);
+            const result = await api.post("/login", data);
+            if (result.data?.token && result.data?.user) {
+                setToken(result.data.token);
+                setUser(result.data.user);
+                setIsAuthenticated(true);
+                return result.data;
+            }
+        } catch (err) {
+            const errorMsg = err.response?.data?.message || err.message || "Login failed";
+            setError(errorMsg);
+            throw new Error(errorMsg);
         } finally {
             setLoading(false);
-        }
-
-    }
-
-    const fetchCurrentUser = async () => {
-        try {
-            const result = await api.get("/me");        // or "/user" or "/profile"
-            setUser(result.data.user || result.data);
-            return result.data;
-        } catch (error) {
-            console.error("fetch user error:", error.message);
-            setUser(null);
-            return null;
         }
     };
 
     const logout = async () => {
         try {
-            await api.post("/logout");        // Backend should clear the cookie
-        } catch (error) {
-            console.error("Logout error:", error.message);
+            await api.post("/logout");
+        } catch (err) {
+            console.error(err);
         } finally {
-            setUser(null);
+            resetAuth();
         }
-    };
-
-    const _loadUser = async () => {
-        await fetchCurrentUser();
     };
 
     const clearError = () => setError(null);
@@ -100,18 +91,18 @@ export const AuthProvider = ({ children }) => {
     return (
         <AuthContext.Provider
             value={{
+                isAuthenticated,
                 user,
+                token,
                 loading,
                 error,
-                registration,
                 login,
                 logout,
-                fetchCurrentUser,
-                loadUser: _loadUser,
-                clearError
+                clearError,
+                checkAuthStatus,
             }}
         >
             {children}
         </AuthContext.Provider>
     );
-}
+};

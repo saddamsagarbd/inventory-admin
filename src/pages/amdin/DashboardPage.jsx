@@ -3,6 +3,7 @@ import SalesChart from "./../../components/dashboard/SalesChart";
 import TopCategories from "./../../components/dashboard/TopCategories";
 import OrdersTable from "./../../components/dashboard/OrdersTable";
 import StatCard from "./../../components/dashboard/StatCard";
+import { AuthContext } from "../../context/AuthContext";
 
 const STATS = [
   {
@@ -46,7 +47,6 @@ export default function DashboardPage() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
@@ -64,7 +64,7 @@ export default function DashboardPage() {
             Welcome back, Admin! Here's what's happening today.
           </p>
         </div>
-        <div className="flex gap-2 md:gap-3 flex-shrink-0">
+        <div className="flex gap-2 md:gap-3 shrink-0">
           <button className="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-semibold text-(--color-primary) bg-white border border-gray-200 hover:border-(--color-primary) hover:bg-(--color-primary)/10 rounded-xl transition-all">
             📥 Export
           </button>

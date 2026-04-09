@@ -25,7 +25,7 @@ export default function Topbar({ collapsed, isMobile, onToggle, activeNav }) {
       <button
         onClick={onToggle}
         aria-label="Toggle sidebar"
-        className="w-9 h-9 rounded-xl cursor-pointer bg-green-50 hover:bg-(--color-primary-hover) hover:text-white text-green-700 flex items-center justify-center transition-all duration-200 flex-shrink-0 text-base"
+        className="w-9 h-9 rounded-xl cursor-pointer bg-green-50 hover:bg-(--color-primary-hover) hover:text-white text-green-700 flex items-center justify-center transition-all duration-200 shrink-0 text-base"
       >
         ☰
       </button>

@@ -1,20 +1,21 @@
 import React, { useContext, useState } from "react";
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import MyLogo from "../components/MyLogo";
 import { AuthContext } from "../context/AuthContext";
 
 export default function LoginPage() {
-  const navigat = useNavigate();
-  const { login, loading, error, clearError } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const { login, isAuthenticated } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [formError, setFormError] = useState('');
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/admin/dashboard";
 
   const handleLogin = async (e) => {
-    console.log("Login:", { username, password, rememberMe });
 
     e.preventDefault();
 
@@ -28,16 +29,18 @@ export default function LoginPage() {
         username, password
       });
 
-      console.log(result.data);
-
       if(result.token){
         // Simulate successful login and navigate to dashboard
-        navigat("/admin/dashboard");
+        navigate(from, { replace: true });
       }
     } catch (error) {
       setFormError(error.message);
     }
   };
+
+  if(isAuthenticated){
+    navigate('/admin/dashboard');
+  }
 
   return (
     <div className="min-h-screen w-full bg-gray-50">
