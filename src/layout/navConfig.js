@@ -12,8 +12,14 @@ export const NAV = [
     ],
   },
   {
-    section: "Catalog",
+    section: "Inventory",
     items: [
+      {
+        id: "store",
+        label: "Stores",
+        icon: "🗂️",
+        path: "/admin/stores",
+      },
       {
         id: "category",
         label: "Category",

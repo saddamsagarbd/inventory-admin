@@ -13,6 +13,8 @@ export default function NavItem({
 }) {
   const active = isActive(item.path);
 
+  console.log(`path: ${item.path}`);
+
   return (
     <div>
       <Link

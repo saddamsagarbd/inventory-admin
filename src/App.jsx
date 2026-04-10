@@ -7,6 +7,7 @@ import RegistrationPage from "./pages/RegistrationPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import DashboardPage from "./pages/amdin/DashboardPage";
 import AdminWrapper from "./layout/AdminWrapper";
+import StoreList from "./pages/amdin/stores/StoreList";
 import CategoryManagement from "./pages/amdin/CategoryManagement";
 import ProductList from "./pages/amdin/products/ProductList";
 import AddEditProduct from "./pages/amdin/products/AddEditProduct";
@@ -27,6 +28,8 @@ import OrderReport from "./pages/amdin/reports/OrderReport";
 import ScheduledReports from "./pages/amdin/reports/ScheduledReports";
 import NotFound from "./pages/amdin/not found/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AddEditStore from "./pages/amdin/stores/AddEditStore";
+import StoreDetails from "./pages/amdin/stores/StoreDetails";
 
 // Dummy components for example
 
@@ -48,11 +51,18 @@ function App() {
             <Route path="dashboard" element={<DashboardPage />} />
             <Route path="categories" element={<CategoryManagement />} />
 
+            {/* 🔥 Store Routes */}
+            <Route path="stores" element={<StoreList />} />
+            <Route path="stores/add" element={<AddEditStore />} />
+            <Route path="stores/edit/:id" element={<AddEditStore />} />
+            <Route path="stores/:id" element={<StoreDetails />} />
+
             {/* 🔥 Product Routes */}
             <Route path="products" element={<ProductList />} />
             <Route path="products/add" element={<AddEditProduct />} />
             <Route path="products/edit/:id" element={<AddEditProduct />} />
             <Route path="products/:id" element={<ProductDetails />} />
+            
             {/* 🔥 Inventory Routes */}
             <Route path="inventory" element={<Inventory />} />
             <Route path="inventory/low-stock" element={<LowStockAlerts />} />
