@@ -12,7 +12,7 @@ export const NAV = [
     ],
   },
   {
-    section: "Inventory",
+    section: "Settings",
     items: [
       {
         id: "store",
@@ -20,6 +20,17 @@ export const NAV = [
         icon: "🗂️",
         path: "/admin/stores",
       },
+      {
+        id: "vendor",
+        label: "Vendors",
+        icon: "🗂️",
+        path: "/admin/vendors",
+      },
+    ]
+  },
+  {
+    section: "Inventory",
+    items: [
       {
         id: "category",
         label: "Category",

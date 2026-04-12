@@ -41,7 +41,7 @@ export default function Sidebar({
   }, [isMobileOpen, onMobileClose]);
 
   const isActive = useCallback(
-    (path) => location.pathname === path,
+    (path) => location.pathname === path || location.pathname.includes(path),
     [location.pathname],
   );
 
