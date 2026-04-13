@@ -1,5 +1,6 @@
 // components/customers/AddressManager.jsx
 import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const AddressManager = ({ addresses, onChange }) => {
   const [showAddressForm, setShowAddressForm] = useState(false);
@@ -15,7 +16,7 @@ const AddressManager = ({ addresses, onChange }) => {
   });
 
   const handleAddAddress = () => {
-    const newAddress = { ...addressForm, id: Date.now() };
+    const newAddress = { ...addressForm, id: uuidv4() };
     const updatedAddresses = [...addresses, newAddress];
     if (addressForm.isDefault) {
       updatedAddresses.forEach((addr) => {

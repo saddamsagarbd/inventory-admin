@@ -19,20 +19,20 @@ const UserFormPage = () => {
 
   useEffect(() => {
     if (id) {
+
+      const loadUser = async () => {
+        const data = await getUser(id);
+        setFormData({
+          name: data.name || "",
+          email: data.email || "",
+          phone: data.phone || "",
+          status: data.status || "active",
+          addresses: data.addresses || [],
+        });
+      };
       loadUser();
     }
-  }, [id]);
-
-  const loadUser = async () => {
-    const data = await getUser(id);
-    setFormData({
-      name: data.name || "",
-      email: data.email || "",
-      phone: data.phone || "",
-      status: data.status || "active",
-      addresses: data.addresses || [],
-    });
-  };
+  }, [id, getUser]);
 
   const validateForm = () => {
     const newErrors = {};
