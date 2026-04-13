@@ -114,7 +114,7 @@ const StoreTable = ({
                         <Edit size={18} />
                       </Link>
                       <button
-                        onClick={() => onDelete(Store)}
+                        onClick={() => onDelete(Store.id)}
                         className="text-red-600 hover:text-red-900 cursor-pointer"
                       >
                         <Trash2 size={18} />

@@ -10,13 +10,13 @@ import {
   Trash2,
   Eye,
 } from "lucide-react";
-import StoreTable from "./components/StoreTable";
-import StoreGrid from "./components/StoreGrid";
+import SupplierTable from "./components/SupplierTable";
+import SupplierGrid from "./components/SupplierGrid";
 import DeleteConfirmation from "./components/DeleteConfirmation";
 import api from '../../../config/axiosConfig';
 
-const StoreList = () => {
-  const [Stores, setStores] = useState([]);
+const SupplierList = () => {
+  const [Suppliers, setSuppliers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState("table"); // 'table' or 'grid'
   const [searchTerm, setSearchTerm] = useState("");
@@ -25,27 +25,27 @@ const StoreList = () => {
     status: "",
     stockStatus: "",
   });
-  const [selectedStores, setSelectedStores] = useState([]);
+  const [selectedSuppliers, setSelectedSuppliers] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [StoreToDelete, setStoreToDelete] = useState(null);
+  const [SupplierToDelete, setSupplierToDelete] = useState(null);
 
   // Mock data - replace with API call
   useEffect(() => {
-    const fetchStores = async () => {
+    const fetchSuppliers = async () => {
       // Simulate API call
       try {
-        const result = await api.get('/store');
+        const result = await api.get('/Supplier');
         setLoading(false);
         if(result.data.success){
-          setStores(result.data.data);
-          setStoreToDelete(result.data.data);
+          setSuppliers(result.data.data);
+          setSupplierToDelete(result.data.data);
         }
       } catch (error) {
         setLoading(false);
         console.log(error.message);
       }
     };
-    fetchStores();
+    fetchSuppliers();
   }, []);
 
   const getStockStatus = (stock, threshold) => {
@@ -59,11 +59,11 @@ const StoreList = () => {
   const handleDelete = async (id) => {
     try {
       // API call to delete
-      await api.delete(`/store/${id}`);
-      const result = await api.get('/store');
-      setStores(result.data.data);
+      await api.delete(`/Supplier/${id}`);
+      const result = await api.get('/Supplier');
+      setSuppliers(result.data.data);
       setShowDeleteModal(false);
-      setStoreToDelete(null);
+      setSupplierToDelete(null);
     } catch (error) {
       console.log(error.message);
     }
@@ -71,26 +71,26 @@ const StoreList = () => {
 
   const handleBulkAction = async (action) => {
     if (action === "delete") {
-      setStores(Stores.filter((s) => !selectedStores.includes(s.id)));
-      setSelectedStores([]);
+      setSuppliers(Suppliers.filter((s) => !selectedSuppliers.includes(s.id)));
+      setSelectedSuppliers([]);
     }
   };
 
-  const filteredStores = Stores.filter((Store) => {
+  const filteredSuppliers = Suppliers.filter((Supplier) => {
     const matchesSearch =
-      Store.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      Store.sku.toLowerCase().includes(searchTerm.toLowerCase());
+      Supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      Supplier.sku.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory =
-      !filters.category || Store.category === filters.category;
-    const matchesStatus = !filters.status || Store.status === filters.status;
+      !filters.category || Supplier.category === filters.category;
+    const matchesStatus = !filters.status || Supplier.status === filters.status;
 
     let matchesStockStatus = true;
     if (filters.stockStatus === "in")
-      matchesStockStatus = Store.stock > Store.lowStockThreshold;
+      matchesStockStatus = Supplier.stock > Supplier.lowStockThreshold;
     if (filters.stockStatus === "low")
       matchesStockStatus =
-        Store.stock <= Store.lowStockThreshold && Store.stock > 0;
-    if (filters.stockStatus === "out") matchesStockStatus = Store.stock === 0;
+        Supplier.stock <= Supplier.lowStockThreshold && Supplier.stock > 0;
+    if (filters.stockStatus === "out") matchesStockStatus = Supplier.stock === 0;
 
     return (
       matchesSearch && matchesCategory && matchesStatus && matchesStockStatus
@@ -102,15 +102,15 @@ const StoreList = () => {
       {/* Header */}
       <div className="mb-6 flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Stores</h1>
-          <p className="text-gray-600 mt-1">Manage your Store</p>
+          <h1 className="text-2xl font-bold text-gray-900">Suppliers</h1>
+          <p className="text-gray-600 mt-1">Manage your Supplier</p>
         </div>
         <Link
-          to="/admin/stores/add"
+          to="/admin/Suppliers/add"
           className="bg-(--color-primary) hover:bg-(--color-primary-hover) text-white px-4 py-2 rounded-lg flex items-center gap-2 transition"
         >
           <Plus size={20} />
-          Add Store
+          Add Supplier
         </Link>
       </div>
 
@@ -170,10 +170,10 @@ const StoreList = () => {
       </div>
 
       {/* Bulk Actions */}
-      {selectedStores.length > 0 && (
+      {selectedSuppliers.length > 0 && (
         <div className="bg-blue-50 rounded-lg p-3 mb-4 flex items-center justify-between">
           <span className="text-sm text-blue-700">
-            {selectedStores.length} Stores selected
+            {selectedSuppliers.length} Suppliers selected
           </span>
           <div className="flex gap-2">
             <button
@@ -183,7 +183,7 @@ const StoreList = () => {
               Delete Selected
             </button>
             <button
-              onClick={() => setSelectedStores([])}
+              onClick={() => setSelectedSuppliers([])}
               className="px-3 py-1 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 text-sm"
             >
               Cancel
@@ -192,25 +192,25 @@ const StoreList = () => {
         </div>
       )}
 
-      {/* Stores View */}
+      {/* Suppliers View */}
       {loading ? (
         <div className="text-center py-12">Loading...</div>
       ) : viewMode === "table" ? (
-        <StoreTable
-          Stores={filteredStores}
-          selectedStores={selectedStores}
-          setSelectedStores={setSelectedStores}
-          onDelete={(Store) => {
-            setStoreToDelete(Store);
+        <SupplierTable
+          Suppliers={filteredSuppliers}
+          selectedSuppliers={selectedSuppliers}
+          setSelectedSuppliers={setSelectedSuppliers}
+          onDelete={(Supplier) => {
+            setSupplierToDelete(Supplier);
             setShowDeleteModal(true);
           }}
           getStockStatus={getStockStatus}
         />
       ) : (
-        <StoreGrid
-          Stores={filteredStores}
-          onDelete={(Store) => {
-            setStoreToDelete(Store);
+        <SupplierGrid
+          Suppliers={filteredSuppliers}
+          onDelete={(Supplier) => {
+            setSupplierToDelete(Supplier);
             setShowDeleteModal(true);
           }}
           getStockStatus={getStockStatus}
@@ -218,13 +218,13 @@ const StoreList = () => {
       )}
 
       {/* Delete Confirmation Modal */}
-      {showDeleteModal && StoreToDelete && (
+      {showDeleteModal && SupplierToDelete && (
         <DeleteConfirmation
-          Store={StoreToDelete}
-          onConfirm={() => handleDelete(StoreToDelete.id)}
+          Supplier={SupplierToDelete}
+          onConfirm={() => handleDelete(SupplierToDelete.id)}
           onCancel={() => {
             setShowDeleteModal(false);
-            setStoreToDelete(null);
+            setSupplierToDelete(null);
           }}
         />
       )}
@@ -232,4 +232,4 @@ const StoreList = () => {
   );
 };
 
-export default StoreList;
+export default SupplierList;

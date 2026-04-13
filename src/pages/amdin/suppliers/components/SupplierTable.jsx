@@ -2,27 +2,27 @@ import React from "react";
 import { Eye, Edit, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const StoreTable = ({
-  Stores,
-  selectedStores,
-  setSelectedStores,
+const SupplierTable = ({
+  Suppliers,
+  selectedSuppliers,
+  setSelectedSuppliers,
   onDelete,
   getStockStatus,
 }) => {
   const handleSelectAll = (e) => {
     if (e.target.checked) {
-      setSelectedStores(Stores.map((s) => s.id));
+      setSelectedSuppliers(Suppliers.map((s) => s.id));
     } else {
-      setSelectedStores([]);
+      setSelectedSuppliers([]);
     }
   };
 
 
-  const handleSelectOne = (StoreId) => {
-    if (selectedStores.includes(StoreId)) {
-      setSelectedStores(selectedStores.filter((id) => id !== StoreId));
+  const handleSelectOne = (SupplierId) => {
+    if (selectedSuppliers.includes(SupplierId)) {
+      setSelectedSuppliers(selectedSuppliers.filter((id) => id !== SupplierId));
     } else {
-      setSelectedStores([...selectedStores, StoreId]);
+      setSelectedSuppliers([...selectedSuppliers, SupplierId]);
     }
   };
 
@@ -36,8 +36,8 @@ const StoreTable = ({
                 <input
                   type="checkbox"
                   checked={
-                    selectedStores.length === Stores.length &&
-                    Stores.length > 0
+                    selectedSuppliers.length === Suppliers.length &&
+                    Suppliers.length > 0
                   }
                   onChange={handleSelectAll}
                   className="rounded border-gray-300"
@@ -58,18 +58,18 @@ const StoreTable = ({
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {Stores.map((Store) => {
+            {Suppliers.map((Supplier) => {
               const stockStatus = getStockStatus(
-                Store.stock,
-                Store.lowStockThreshold,
+                Supplier.stock,
+                Supplier.lowStockThreshold,
               );
               return (
-                <tr key={Store.id} className="hover:bg-gray-50">
+                <tr key={Supplier.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4">
                     <input
                       type="checkbox"
-                      checked={selectedStores.includes(Store.id)}
-                      onChange={() => handleSelectOne(Store.id)}
+                      checked={selectedSuppliers.includes(Supplier.id)}
+                      onChange={() => handleSelectOne(Supplier.id)}
                       className="rounded border-gray-300"
                     />
                   </td>
@@ -77,44 +77,44 @@ const StoreTable = ({
                     <span
                       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${stockStatus.color}`}
                     >
-                      {Store.code}
+                      {Supplier.code}
                     </span>
                   </td>
                   <td className="px-6 py-4">
                     <div className="font-medium text-gray-900">
-                      {Store.name}
+                      {Supplier.name}
                     </div>
                     <div className="text-sm text-gray-500">
-                      Address: {Store.fullAddress}
+                      Address: {Supplier.fullAddress}
                     </div>
                   </td>
                   <td className="px-6 py-4">
                     <span
                       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        Store.status === "active"
+                        Supplier.status === "active"
                           ? "bg-green-100 text-green-800"
                           : "bg-gray-100 text-gray-800"
                       }`}
                     >
-                      {Store.status}
+                      {Supplier.status}
                     </span>
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex gap-2">
                       <Link
-                        to={`/admin/stores/${Store.id}`}
+                        to={`/admin/Suppliers/${Supplier.id}`}
                         className="text-blue-600 hover:text-blue-900 cursor-pointer"
                       >
                         <Eye size={18} />
                       </Link>
                       <Link
-                        to={`/admin/stores/edit/${Store.id}`}
+                        to={`/admin/Suppliers/edit/${Supplier.id}`}
                         className="text-green-600 hover:text-green-900 cursor-pointer"
                       >
                         <Edit size={18} />
                       </Link>
                       <button
-                        onClick={() => onDelete(Store)}
+                        onClick={() => onDelete(Supplier)}
                         className="text-red-600 hover:text-red-900 cursor-pointer"
                       >
                         <Trash2 size={18} />
@@ -127,11 +127,11 @@ const StoreTable = ({
           </tbody>
         </table>
       </div>
-      {Stores.length === 0 && (
-        <div className="text-center py-12 text-gray-500">No Stores found</div>
+      {Suppliers.length === 0 && (
+        <div className="text-center py-12 text-gray-500">No Suppliers found</div>
       )}
     </div>
   );
 };
 
-export default StoreTable;
+export default SupplierTable;

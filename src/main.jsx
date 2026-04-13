@@ -5,6 +5,7 @@ import App from "./App";
 import "./index.css";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthProvider";
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

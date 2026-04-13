@@ -30,6 +30,12 @@ import NotFound from "./pages/amdin/not found/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AddEditStore from "./pages/amdin/stores/AddEditStore";
 import StoreDetails from "./pages/amdin/stores/StoreDetails";
+import SupplierList from "./pages/amdin/suppliers/SupplierList";
+import AddEditSupplier from "./pages/amdin/suppliers/AddEditSupplier";
+import SupplierDetails from "./pages/amdin/suppliers/SupplierDetails";
+import Users from "./pages/amdin/users/Users";
+import UserDetailsPage from "./pages/amdin/users/UserDetailsPage";
+import UserFormPage from "./pages/amdin/users/UserFormPage";
 
 // Dummy components for example
 
@@ -56,6 +62,18 @@ function App() {
             <Route path="stores/add" element={<AddEditStore />} />
             <Route path="stores/edit/:id" element={<AddEditStore />} />
             <Route path="stores/:id" element={<StoreDetails />} />
+
+            {/* 🔥 Supplier Routes */}
+            <Route path="Suppliers" element={<SupplierList />} />
+            <Route path="Suppliers/add" element={<AddEditSupplier />} />
+            <Route path="Suppliers/edit/:id" element={<AddEditSupplier />} />
+            <Route path="Suppliers/:id" element={<SupplierDetails />} />
+
+            {/* 🔥 User Routes */}
+            <Route path="users" element={<Users />} />
+            <Route path="users/:id" element={<UserDetailsPage />} />
+            <Route path="users/add" element={<UserFormPage />} />
+            <Route path="users/edit/:id" element={<UserFormPage />} />
 
             {/* 🔥 Product Routes */}
             <Route path="products" element={<ProductList />} />

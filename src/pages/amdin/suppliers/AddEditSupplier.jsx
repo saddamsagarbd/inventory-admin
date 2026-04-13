@@ -1,63 +1,62 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Save, X } from "lucide-react";
-import StoreForm from "./components/StoreForm";
+import SupplierForm from "./components/SupplierForm";
 import api from '../../../config/axiosConfig';
 
-const AddEditStore = () => {
+const AddEditSupplier = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("basic");
   const [formData, setFormData] = useState({
     name: "",
+    contactPerson: "",
+    email: "",
+    phone: "",
     address: "",
     city: "",
     state: "",
     country: "",
-    postalCode: "",
-    isMainWarehouse: true,
-    notes: "",
+    postalCode: ""
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // API call to save
-    console.log("Saving Store:", formData);
     try {
-      const result = await api.post('/store/create', formData);
+      const result = id ? await api.put(`/supplier/${id}`, formData) : await api.post('/supplier/create', formData);
       // await new Promise((resolve) => setTimeout(resolve, 1000));
       setLoading(false);
       if(result.data.success){
-        navigate("/admin/Stores");
+        navigate("/admin/Suppliers");
       }else{
         console.log(result.data.message);
       }
       
     } catch (error) {
       setLoading(false);
-      console.log(`Store create error: ${error.message}`);
+      console.log(`Supplier create error: ${error.message}`);
     }
   };
 
   const tabs = [
-    { id: "basic", label: "Store Info", icon: "📝" },
+    { id: "basic", label: "Supplier Info", icon: "📝" },
   ];
 
   useEffect(() => {
     if (id) {
 
-      const fetchStore = async () => {
+      const fetchSupplier = async () => {
         setLoading(true);
         // API call
-        const result = await api.get(`/store/${id}`);
+        const result = await api.get(`/Supplier/${id}`);
         // console.log(result.data.data);
         setFormData(result.data.data);
         setLoading(false);
       };
       
-      fetchStore();
+      fetchSupplier();
     }
   }, [id]);
 
@@ -68,16 +67,16 @@ const AddEditStore = () => {
         <div className="mb-6 flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">
-              {id ? "Edit Store" : "Add New Store"}
+              {id ? "Edit Supplier" : "Add New Supplier"}
             </h1>
             <p className="text-gray-600 mt-1">
               {id
-                ? "Update Store information"
-                : "Create a new Store in your catalog"}
+                ? "Update Supplier information"
+                : "Create a new Supplier in your catalog"}
             </p>
           </div>
           <button
-            onClick={() => navigate("/admin/stores")}
+            onClick={() => navigate("/admin/Suppliers")}
             className="text-gray-600 hover:text-gray-900"
           >
             <X size={24} />
@@ -108,7 +107,7 @@ const AddEditStore = () => {
 
         {/* Form */}
         <form onSubmit={handleSubmit}>
-          <StoreForm
+          <SupplierForm
             activeTab={activeTab}
             formData={formData}
             setFormData={setFormData}
@@ -119,18 +118,18 @@ const AddEditStore = () => {
             <div className="flex gap-3 justify-end">
               <button
                 type="button"
-                onClick={() => navigate("/admin/stores")}
-                className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
+                onClick={() => navigate("/admin/Suppliers")}
+                className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-2 bg-(--color-primary) text-white rounded-lg hover:bg-(--color-primary-hover) transition disabled:opacity-50 flex items-center gap-2"
+                className="px-6 py-2 bg-(--color-primary) text-white rounded-lg hover:bg-(--color-primary-hover) transition disabled:opacity-50 flex items-center gap-2 cursor-pointer"
               >
                 <Save size={18} />
-                {loading ? "Saving..." : "Save Store"}
+                {loading ? "Saving..." : "Save Supplier"}
               </button>
             </div>
           </div>
@@ -140,4 +139,4 @@ const AddEditStore = () => {
   );
 };
 
-export default AddEditStore;
+export default AddEditSupplier;

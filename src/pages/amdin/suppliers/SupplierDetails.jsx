@@ -10,24 +10,24 @@ import {
 } from "lucide-react";
 import api from '../../../config/axiosConfig';
 
-const StoreDetails = () => {
+const SupplierDetails = () => {
   const { id } = useParams();
-  const [Store, setStore] = useState(null);
+  const [Supplier, setSupplier] = useState(null);
   const [activeTab, setActiveTab] = useState("details");
   const [orders, setOrders] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchStoreDetails = async () => {
+    const fetchSupplierDetails = async () => {
       setLoading(true);
       // Mock API calls
-      const result = await api.get(`/store/${id}`);
+      const result = await api.get(`/Supplier/${id}`);
 
-      setStore(result.data.data);
+      setSupplier(result.data.data);
       
       setLoading(false);
     };
-    fetchStoreDetails();
+    fetchSupplierDetails();
   }, [id]);
 
   
@@ -46,25 +46,25 @@ const StoreDetails = () => {
         {/* Header */}
         <div className="mb-6">
           <Link
-            to="/admin/stores"
+            to="/admin/Suppliers"
             className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4"
           >
             <ArrowLeft size={20} className="mr-1" />
-            Back to Stores
+            Back to Suppliers
           </Link>
           <div className="flex justify-between items-start">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
-                {Store.code} - {Store.name}
+                {Supplier.code} - {Supplier.name}
               </h1>
-              <p className="text-gray-600 mt-1">Address: {Store.fullAddress}</p>
+              <p className="text-gray-600 mt-1">Address: {Supplier.fullAddress}</p>
             </div>
             <div className="flex gap-3">
               <Link
-                to={`/admin/stores/edit/${id}`}
+                to={`/admin/Suppliers/edit/${id}`}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
-                Edit Store
+                Edit Supplier
               </Link>
             </div>
           </div>
@@ -77,7 +77,7 @@ const StoreDetails = () => {
               <div>
                 <p className="text-sm text-gray-600">Current Stock</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {Store.stock}
+                  {Supplier.stock}
                 </p>
               </div>
               <Package className="text-blue-500" size={32} />
@@ -88,11 +88,11 @@ const StoreDetails = () => {
               <div>
                 <p className="text-sm text-gray-600">Price</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  ${Store.price}
+                  ${Supplier.price}
                 </p>
-                {Store.salePrice && (
+                {Supplier.salePrice && (
                   <p className="text-sm text-green-600">
-                    Sale: ${Store.salePrice}
+                    Sale: ${Supplier.salePrice}
                   </p>
                 )}
               </div>
@@ -130,4 +130,4 @@ const StoreDetails = () => {
   );
 };
 
-export default StoreDetails;
+export default SupplierDetails;

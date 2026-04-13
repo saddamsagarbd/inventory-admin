@@ -14,6 +14,7 @@ import StoreTable from "./components/StoreTable";
 import StoreGrid from "./components/StoreGrid";
 import DeleteConfirmation from "./components/DeleteConfirmation";
 import api from '../../../config/axiosConfig';
+import MySwal from '../../../utils/swal';
 
 const StoreList = () => {
   const [Stores, setStores] = useState([]);
@@ -57,15 +58,50 @@ const StoreList = () => {
   };
 
   const handleDelete = async (id) => {
-    try {
-      // API call to delete
-      await api.delete(`/store/${id}`);
-      const result = await api.get('/store');
-      setStores(result.data.data);
-      setShowDeleteModal(false);
-      setStoreToDelete(null);
-    } catch (error) {
-      console.log(error.message);
+
+    console
+
+    if(!id){
+      MySwal.fire({
+        title: 'Error!',
+        text: 'ID not found',
+        icon: 'error'
+      });
+    }else{
+
+      const result = await MySwal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+      });
+
+      if (result.isConfirmed) {
+        try {
+          // API call to delete
+          await api.delete(`/store/${id}`);
+
+          MySwal.fire({
+            title: 'Deleted!',
+            text: 'Store has been deleted.',
+            icon: 'success'
+          });
+
+          const result = await api.get('/store');
+          setStores(result.data.data);
+        } catch (error) {
+          MySwal.fire({
+            title: 'Error!',
+            text: error.message,
+            icon: 'error'
+          });
+        }
+
+      }
+
     }
   };
 

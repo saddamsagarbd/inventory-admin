@@ -21,12 +21,30 @@ export const NAV = [
         path: "/admin/stores",
       },
       {
-        id: "vendor",
-        label: "Vendors",
-        icon: "🗂️",
-        path: "/admin/vendors",
+        id: "suppliers",
+        label: "Suppliers",
+        icon: "👤",
+        path: "/admin/suppliers",
       },
-    ]
+      {
+        id: "customers",
+        label: "Customers",
+        icon: "👥",
+        path: "/admin/customers",
+      },
+      {
+        id: "adminUsers",
+        label: "Users",
+        icon: "👤",
+        path: "/admin/users",
+      },
+      {
+        id: "settings",
+        label: "Settings",
+        icon: "⚙️",
+        path: "/admin/settings",
+      },
+    ],
   },
   {
     section: "Inventory",
@@ -80,29 +98,6 @@ export const NAV = [
       //   icon: "🎟️",
       //   path: "/admin/coupons",
       // },
-    ],
-  },
-  {
-    section: "Settings",
-    items: [
-      {
-        id: "customers",
-        label: "Customers",
-        icon: "👥",
-        path: "/admin/customers",
-      },
-      {
-        id: "adminUsers",
-        label: "Users",
-        icon: "👤",
-        path: "/admin/users",
-      },
-      {
-        id: "settings",
-        label: "Settings",
-        icon: "⚙️",
-        path: "/admin/settings",
-      },
     ],
   },
 ];

@@ -1,20 +1,11 @@
 import React from "react";
 import ImageUploader from "./ImageUploader";
 
-const StoreForm = ({ activeTab, formData, setFormData }) => {
+const SupplierForm = ({ activeTab, formData, setFormData }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
-  const handleCbChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
-  }
 
   const tabsContent = {
     basic: (
@@ -22,12 +13,52 @@ const StoreForm = ({ activeTab, formData, setFormData }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Store Name *
+              Supplier name *
             </label>
             <input
               type="text"
               name="name"
               value={formData.name}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border text-black border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Contact person *
+            </label>
+            <input
+              type="text"
+              name="contactPerson"
+              value={formData.contactPerson}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border text-black border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Email
+            </label>
+            <input
+              type="text"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border text-black border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Primary Contact no *
+            </label>
+            <input
+              type="text"
+              name="phone"
+              value={formData.phone}
               onChange={handleChange}
               className="w-full px-4 py-2 border text-black border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
@@ -46,8 +77,6 @@ const StoreForm = ({ activeTab, formData, setFormData }) => {
               required
             />
           </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               City *
@@ -103,75 +132,6 @@ const StoreForm = ({ activeTab, formData, setFormData }) => {
             </select>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Manager *
-            </label>
-            <select
-              name="manager"
-              value={formData.manager}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border text-black border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            >
-              <option value="">Select manager</option>
-              <option value="69c8e9df65ad72c6bb46f30e">Saddam Hossain</option>
-            </select>
-          </div> */}
-          {/* <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Email *
-            </label>
-            <input
-              type="text"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border text-black border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div> */}
-          {/* <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Phone *
-            </label>
-            <input
-              type="text"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border text-black border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div> */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Notes
-            </label>
-            <textarea
-              name="notes"
-              value={formData.notes}
-              onChange={handleChange}
-              rows="6"
-              className="w-full px-4 py-2 border text-black border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Store notes..."
-            />
-          </div>
-          <div>
-            <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
-              <span>Is main warehouse?</span>
-              <input
-                type="checkbox"
-                name="isMainWarehouse" // your boolean field name
-                checked={formData.isMainWarehouse}
-                onChange={handleCbChange}
-                className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-              />
-            </label>
-          </div>
-
-        </div>
       </div>
     ),
   };
@@ -183,4 +143,4 @@ const StoreForm = ({ activeTab, formData, setFormData }) => {
   );
 };
 
-export default StoreForm;
+export default SupplierForm;
