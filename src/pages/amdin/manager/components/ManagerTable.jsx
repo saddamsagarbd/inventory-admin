@@ -92,10 +92,10 @@ const managerTable = ({ managers }) => {
                   </div>
                 </td>
                 <td className="px-6 py-4">
-                  <div className="text-sm text-gray-900">{manager.store.name}</div>
+                  <div className="text-sm text-gray-900">{manager.store.name}({manager.store.code})</div>
                   {manager.store.name && (
                     <div className="text-sm text-gray-500">
-                      {manager.store.address}
+                      {manager.store.address}, {manager.store.city}
                     </div>
                   )}
                 </td>

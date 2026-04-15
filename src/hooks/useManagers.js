@@ -182,10 +182,11 @@ export const useManager = () => {
     }
   };
 
-  const updateManager = async (id, ManagerData) => {
+  const updateManager = async (id, managerData) => {
     setLoading(true);
     try {
-      const result = await api.put(`/managers/${id}`, ManagerData);
+      const result = await api.put(`/managers/${id}`, managerData);
+      console.log(result);
       setManager(
         result.data.Manager
       );

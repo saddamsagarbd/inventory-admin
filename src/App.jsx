@@ -58,7 +58,6 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/admin" element={<AdminWrapper />}>
             <Route path="dashboard" element={<DashboardPage />} />
-            <Route path="categories" element={<CategoryManagement />} />
 
             {/* 🔥 Store Routes */}
             <Route path="stores" element={<StoreList />} />
@@ -83,6 +82,8 @@ function App() {
             <Route path="managers/:id" element={<ManagerDetailsPage />} />
             <Route path="managers/add" element={<ManagerFormPage />} />
             <Route path="managers/edit/:id" element={<ManagerFormPage />} />
+            
+            <Route path="categories" element={<CategoryManagement />} />
 
             {/* 🔥 Product Routes */}
             <Route path="products" element={<ProductList />} />

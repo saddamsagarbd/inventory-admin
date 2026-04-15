@@ -23,22 +23,22 @@ const ManagerFormPage = () => {
     fetchStores();
   }, []);
 
+  const loadManager = async () => {
+    const data = await getManager(id);
+    setFormData({
+      user: data.userId || "",
+      store:  data.storeId || "",
+      role:  data.role || "",
+      isActive: true,
+      addresses: [],
+    });
+  };
+
   useEffect(() => {
     if (id) {
-
-      const loadManager = async () => {
-        const data = await getManager(id);
-        setFormData({
-          name: data.name || "",
-          email: data.email || "",
-          phone: data.phone || "",
-          status: data.status || "active",
-          addresses: data.addresses || [],
-        });
-      };
       loadManager();
     }
-  }, [id, getManager]);
+  }, [id]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -52,8 +52,6 @@ const ManagerFormPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-
-    console.log(formData);
 
     try {
       if (id) {
