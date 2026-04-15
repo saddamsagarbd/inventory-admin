@@ -59,8 +59,6 @@ const StoreList = () => {
 
   const handleDelete = async (id) => {
 
-    console
-
     if(!id){
       MySwal.fire({
         title: 'Error!',

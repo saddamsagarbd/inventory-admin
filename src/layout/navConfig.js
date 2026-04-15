@@ -39,10 +39,10 @@ export const NAV = [
         path: "/admin/users",
       },
       {
-        id: "settings",
-        label: "Settings",
+        id: "manager",
+        label: "Store Manager",
         icon: "⚙️",
-        path: "/admin/settings",
+        path: "/admin/managers",
       },
     ],
   },

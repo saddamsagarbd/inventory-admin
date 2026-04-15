@@ -61,6 +61,7 @@ export const AuthProvider = ({ children }) => {
         setError(null);
         try {
             const result = await api.post("/login", data);
+            console.log(result);
             if (result.data?.token && result.data?.user) {
                 setToken(result.data.token);
                 setUser(result.data.user);

@@ -36,6 +36,9 @@ import SupplierDetails from "./pages/amdin/suppliers/SupplierDetails";
 import Users from "./pages/amdin/users/Users";
 import UserDetailsPage from "./pages/amdin/users/UserDetailsPage";
 import UserFormPage from "./pages/amdin/users/UserFormPage";
+import Managers from "./pages/amdin/manager/Managers";
+import ManagerDetailsPage from "./pages/amdin/manager/ManagerDetailsPage";
+import ManagerFormPage from "./pages/amdin/manager/ManagerFormPage";
 
 // Dummy components for example
 
@@ -74,6 +77,12 @@ function App() {
             <Route path="users/:id" element={<UserDetailsPage />} />
             <Route path="users/add" element={<UserFormPage />} />
             <Route path="users/edit/:id" element={<UserFormPage />} />
+
+            {/* 🔥 Manager Routes */}
+            <Route path="managers" element={<Managers />} />
+            <Route path="managers/:id" element={<ManagerDetailsPage />} />
+            <Route path="managers/add" element={<ManagerFormPage />} />
+            <Route path="managers/edit/:id" element={<ManagerFormPage />} />
 
             {/* 🔥 Product Routes */}
             <Route path="products" element={<ProductList />} />

@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState('');
   const location = useLocation();
   const from = location.state?.from?.pathname || "/admin/dashboard";
@@ -24,16 +25,21 @@ export default function LoginPage() {
       return;
     }
 
+    setLoading(true);
+
     try {
       const result = await login({
         username, password
       });
+
+      setLoading(false);
 
       if(result.token){
         // Simulate successful login and navigate to dashboard
         navigate(from, { replace: true });
       }
     } catch (error) {
+      setLoading(false);
       setFormError(error.message);
     }
   };
@@ -134,9 +140,10 @@ export default function LoginPage() {
             {/* Login Button */}
             <button
               onClick={handleLogin}
+              disabled={loading}
               className="w-full cursor-pointer bg-(--color-primary) text-white font-semibold py-4 rounded-xl hover:bg-(--color-primary-hover) transition flex items-center justify-center gap-2"
             >
-              Sign In
+              {loading ? "Processing..." : "Sign In"}
               <ArrowRight className="w-5 h-5" />
             </button>
 
