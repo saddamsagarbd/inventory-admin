@@ -16,7 +16,7 @@ export const CategoryForm = ({ categories, editData, onSave, onCancel, showToast
         name: editData?.name ?? "",
         slug: editData?.slug ?? "",
         description: editData?.description ?? "",
-        parent: editData?.parent ?? "",
+        parent_category: editData?.parent_category ?? "",
         status: editData?.status ?? "active",
         icon: editData?.icon ?? "🗂️",
         metaTitle: editData?.metaTitle ?? "",
@@ -110,11 +110,9 @@ export const CategoryForm = ({ categories, editData, onSave, onCancel, showToast
         }
     };
 
-    const parentOptions = categories.filter((c) => c._id !== editData?.id);
+    const parentOptions = categories.filter((c) => c.id !== editData?.id);
     const metaTitleLen = form.metaTitle.length;
     const metaDescLen = form.metaDesc.length;
-
-    console.log(parentOptions);
 
     const TABS = [
         { id: "general", label: "General", icon: "📋" },
@@ -248,9 +246,9 @@ export const CategoryForm = ({ categories, editData, onSave, onCancel, showToast
                 <div className="grid grid-cols-2 gap-4">
                     <Select
                     label="Parent Category"
-                    value={form.parent ?? ""}
+                    value={form.parent_category ?? ""}
                     onChange={(e) =>
-                        set("parent", e.target.value ? e.target.value : "")
+                        set("parent_category", e.target.value ? e.target.value : "")
                     }
                     >
                     <option value="">— None (Top Level) —</option>
@@ -508,10 +506,10 @@ export const CategoryForm = ({ categories, editData, onSave, onCancel, showToast
                     <p className="font-bold text-gray-900 text-lg leading-tight">
                     {form.name || "Category Name"}
                     </p>
-                    {form.parent && (
+                    {form.parent_category && (
                     <p className="text-xs text-gray-400 mt-1">
                         Under:{" "}
-                        {categories.find((c) => c.id === Number(form.parent))?.name}
+                        {categories.find((c) => c.id === Number(form.parent_category))?.name}
                     </p>
                     )}
                     <code className="text-xs text-gray-400 mt-1 block font-mono">

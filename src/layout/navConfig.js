@@ -50,6 +50,12 @@ export const NAV = [
     section: "Inventory",
     items: [
       {
+        id: "unit",
+        label: "Unit",
+        icon: "🗂️",
+        path: "/admin/units",
+      },
+      {
         id: "category",
         label: "Category",
         icon: "🗂️",

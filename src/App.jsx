@@ -39,6 +39,7 @@ import UserFormPage from "./pages/admin/users/UserFormPage";
 import Managers from "./pages/admin/manager/Managers";
 import ManagerDetailsPage from "./pages/admin/manager/ManagerDetailsPage";
 import ManagerFormPage from "./pages/admin/manager/ManagerFormPage";
+import UnitManagement from "./pages/admin/UnitManagement";
 
 // Dummy components for example
 
@@ -82,7 +83,9 @@ function App() {
             <Route path="managers/:id" element={<ManagerDetailsPage />} />
             <Route path="managers/add" element={<ManagerFormPage />} />
             <Route path="managers/edit/:id" element={<ManagerFormPage />} />
-            
+
+
+            <Route path="units" element={<UnitManagement />} />
             <Route path="categories" element={<CategoryManagement />} />
 
             {/* 🔥 Product Routes */}

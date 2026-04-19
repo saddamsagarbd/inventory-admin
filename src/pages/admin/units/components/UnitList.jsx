@@ -6,7 +6,7 @@ import Checkbox from "../../../../components/Checkbox";
 import Modal from "../../../../components/Modal";
 import SortIcon from "../../../../components/SortIcon";
 
-export const CategoryList = ({ categories, onEdit, onDelete, onAdd, showToast }) => {
+export const UnitList = ({ units, onEdit, onDelete, onAdd, showToast }) => {
     const [search, setSearch] = useState("");
     const [statusFilter, setStatusFilter] = useState("all");
     const [sortBy, setSortBy] = useState("name");
@@ -17,7 +17,7 @@ export const CategoryList = ({ categories, onEdit, onDelete, onAdd, showToast })
     const [page, setPage] = useState(1);
     const PER_PAGE = 6;
 
-    const filtered = categories
+    const filtered = units
         .filter((c) => {
             const matchSearch =
                 c.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -61,25 +61,25 @@ export const CategoryList = ({ categories, onEdit, onDelete, onAdd, showToast })
 
     const getParentName = (parentId) => {
         if (!parentId) return "—";
-        const p = categories.find((c) => c.id === parentId);
+        const p = units.find((c) => c.id === parentId);
         return p ? p.name : "—";
     };
 
     const confirmDelete = () => {
         if (deleteModal === "single") {
         onDelete([deleteTarget]);
-        showToast("Category deleted successfully.", "success");
+        showToast("unit deleted successfully.", "success");
         } else {
         onDelete(selected);
-        showToast(`${selected.length} categories deleted.`, "success");
+        showToast(`${selected.length} units deleted.`, "success");
         setSelected([]);
         }
         setDeleteModal(null);
         setDeleteTarget(null);
     };
 
-    const activeCount = categories.filter((c) => c.status === "active").length;
-    const inactiveCount = categories.filter(
+    const activeCount = units.filter((c) => c.status === "active").length;
+    const inactiveCount = units.filter(
         (c) => c.status === "inactive",
     ).length;
 
@@ -89,14 +89,14 @@ export const CategoryList = ({ categories, onEdit, onDelete, onAdd, showToast })
         <div className="flex items-center justify-between mb-6">
             <div>
             <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
-                Category Management
+                unit Management
             </h1>
             <p className="text-sm text-gray-400 mt-0.5">
-                Manage your product categories and subcategories
+                Manage your product units and subunits
             </p>
             </div>
             <Btn onClick={onAdd} size="md">
-            <span>＋</span> Add Category
+            <span>＋</span> Add unit
             </Btn>
         </div>
 
@@ -104,8 +104,8 @@ export const CategoryList = ({ categories, onEdit, onDelete, onAdd, showToast })
         <div className="grid grid-cols-3 gap-4 mb-6">
             {[
             {
-                label: "Total Categories",
-                value: categories.length,
+                label: "Total units",
+                value: units.length,
                 icon: "🗂️",
                 bg: "bg-green-50",
                 color: "text-green-700",
@@ -160,7 +160,7 @@ export const CategoryList = ({ categories, onEdit, onDelete, onAdd, showToast })
                     setSearch(e.target.value);
                     setPage(1);
                 }}
-                placeholder="Search categories…"
+                placeholder="Search units…"
                 className="bg-transparent outline-none text-sm text-gray-700 placeholder-gray-400 w-full"
                 />
                 {search && (
@@ -246,7 +246,7 @@ export const CategoryList = ({ categories, onEdit, onDelete, onAdd, showToast })
                     />
                     </th>
                     <th className="px-5 py-3 text-left text-[10px] uppercase tracking-widest text-gray-400 font-semibold">
-                    Category
+                    unit
                     </th>
                     <th className="px-5 py-3 text-left text-[10px] uppercase tracking-widest text-gray-400 font-semibold">
                     Slug
@@ -274,7 +274,7 @@ export const CategoryList = ({ categories, onEdit, onDelete, onAdd, showToast })
                     <td colSpan={8} className="text-center py-16 text-gray-400">
                         <div className="flex flex-col items-center gap-2">
                         <span className="text-4xl">🔍</span>
-                        <p className="font-medium">No categories found</p>
+                        <p className="font-medium">No units found</p>
                         <p className="text-sm">
                             Try adjusting your search or filter
                         </p>
@@ -300,13 +300,13 @@ export const CategoryList = ({ categories, onEdit, onDelete, onAdd, showToast })
                         </td>
                         <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 rounded-xl bg-green-50 flex items-center justify-center text-xl flex-shrink-0 border border-green-100">
+                            {/* <div className="w-9 h-9 rounded-xl bg-green-50 flex items-center justify-center text-xl flex-shrink-0 border border-green-100">
                                 <img
                                 src={cat.image}
                                 alt="Preview"
                                 className="w-6 h-6 object-cover rounded-xl"
                                 />
-                            </div>
+                            </div> */}
                             <div>
                             <p className="text-sm font-semibold text-gray-800">
                                 {cat.name}
@@ -332,7 +332,7 @@ export const CategoryList = ({ categories, onEdit, onDelete, onAdd, showToast })
                         </td>
                         <td className="px-5 py-4">
                         <span className="font-mono text-sm font-bold text-gray-800">
-                            {cat.products}
+                            {cat.products || 0}
                         </span>
                         </td>
                         <td className="px-5 py-4">
@@ -425,8 +425,8 @@ export const CategoryList = ({ categories, onEdit, onDelete, onAdd, showToast })
             </div>
             <p className="text-center text-gray-700 text-sm leading-relaxed">
                 {deleteModal === "bulk"
-                ? `Are you sure you want to delete ${selected.length} selected categories? This action cannot be undone.`
-                : "Are you sure you want to delete this category? This action cannot be undone."}
+                ? `Are you sure you want to delete ${selected.length} selected units? This action cannot be undone.`
+                : "Are you sure you want to delete this unit? This action cannot be undone."}
             </p>
             <div className="flex gap-3">
                 <Btn

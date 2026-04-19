@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import Toast from "../../components/Toast";
-import { CategoryList } from "./categories/components/CategoryList";
-import { CategoryForm } from "./categories/components/CategoryForm";
+import { UnitList } from "./units/components/UnitList";
+import { UnitForm } from "./units/components/UnitForm";
 import api from "../../config/axiosConfig";
 
 /* ─── MOCK DATA ───────────────────────────────── */
-const INITIAL_CATEGORIES = [
+const INITIAL_units = [
   {
     id: 1,
     name: "Vegetables",
@@ -103,7 +103,7 @@ const INITIAL_CATEGORIES = [
     slug: "bakery",
     status: "inactive",
     products: 0,
-    parent_category: null,
+    parent_Unit: null,
     icon: "🍞",
     description: "Breads, cakes and pastries",
     metaTitle: "Fresh Bakery Products",
@@ -113,8 +113,8 @@ const INITIAL_CATEGORIES = [
 ];
 
 /* ─── ROOT APP ────────────────────────────────── */
-export default function CategoryManagement() {
-  const [categories, setCategories] = useState([]);
+export default function UnitManagement() {
+  const [units, setUnits] = useState([]);
   const [view, setView] = useState("list"); // "list" | "add" | "edit"
   const [editData, setEditData] = useState(null);
   const [toasts, setToasts] = useState([]);
@@ -129,9 +129,9 @@ export default function CategoryManagement() {
     setEditData(null);
     setView("add");
   };
-  const handleEdit = (cat) => {
-    console.log(cat);
-    setEditData(cat);
+  const handleEdit = (unit) => {
+    console.log(unit);
+    setEditData(unit);
     setView("edit");
   };
   const handleCancel = () => {
@@ -141,32 +141,34 @@ export default function CategoryManagement() {
 
   const handleSave = async (formData) => {
 
+    console.log(formData);
+
     if (editData) {
-      const result = await api.put(`/category/${editData.id}`, formData);
-      setCategories((cats) => [...cats, result.data.category]);
+      const result = await api.put(`/units/${editData.id}`, formData);
+      setUnits((units) => [...units, result.data.Unit]);
     } else {
-      const result = await api.post('/category/create', formData);
-      setCategories((cats) => [...cats, result.data.category]);
+      const result = await api.post('/units/create', formData);
+      setUnits((units) => [...units, result.data.Unit]);
     }
   };
 
   const handleDelete = (ids) => {
-    setCategories((cats) => cats.filter((c) => !ids.includes(c.id)));
+    setUnits((units) => units.filter((c) => !ids.includes(c.id)));
   };
 
   useEffect(()=>{
 
-    const loadCategories = async () => {
+    const loadUnits = async () => {
       try {
-        const result = await api.get('/category');
-        if(result.data.categories) setCategories(result.data.categories);
+        const result = await api.get('/units');
+        if(result.data.units) setUnits(result.data.units);
       } catch (error) {
         console.log(error.message)
       }
 
     }
 
-    loadCategories();
+    loadUnits();
 
   }, []);
 
@@ -177,8 +179,8 @@ export default function CategoryManagement() {
     >
       <div className="max-w-7xl mx-auto">
         {view === "list" && (
-          <CategoryList
-            categories={categories}
+          <UnitList
+            units={units}
             onEdit={handleEdit}
             onDelete={handleDelete}
             onAdd={handleAdd}
@@ -186,8 +188,7 @@ export default function CategoryManagement() {
           />
         )}
         {(view === "add" || view === "edit") && (
-          <CategoryForm
-            categories={categories}
+          <UnitForm
             editData={editData}
             onSave={handleSave}
             onCancel={handleCancel}
