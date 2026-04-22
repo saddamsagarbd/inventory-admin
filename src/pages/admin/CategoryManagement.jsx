@@ -130,7 +130,6 @@ export default function CategoryManagement() {
     setView("add");
   };
   const handleEdit = (cat) => {
-    console.log(cat);
     setEditData(cat);
     setView("edit");
   };
@@ -143,11 +142,18 @@ export default function CategoryManagement() {
 
     if (editData) {
       const result = await api.put(`/category/${editData.id}`, formData);
-      setCategories((cats) => [...cats, result.data.category]);
+      setCategories((cats) => cats.map((cat) => 
+        {
+          if(!result.data.category) return cat;
+          console.log(cat.id === result.data.category.id);
+          return cat.id === result.data.category.id ? result.data.category : cat
+        }
+      ));
     } else {
       const result = await api.post('/category/create', formData);
       setCategories((cats) => [...cats, result.data.category]);
     }
+    setView("list");
   };
 
   const handleDelete = (ids) => {

@@ -30,52 +30,51 @@ const ProductList = () => {
 
   // Mock data - replace with API call
   useEffect(() => {
+      const fetchProducts = async () => {
+        // Simulate API call
+        const mockProducts = [
+          {
+            id: 1,
+            name: "Wireless Headphones",
+            sku: "WH-001",
+            price: 99.99,
+            salePrice: 79.99,
+            stock: 45,
+            status: "active",
+            category: "Electronics",
+            image: "https://via.placeholder.com/100",
+            lowStockThreshold: 10,
+          },
+          {
+            id: 2,
+            name: "Smart Watch",
+            sku: "SW-002",
+            price: 199.99,
+            salePrice: null,
+            stock: 5,
+            status: "active",
+            category: "Electronics",
+            image: "https://via.placeholder.com/100",
+            lowStockThreshold: 10,
+          },
+          {
+            id: 3,
+            name: "Cotton T-Shirt",
+            sku: "CT-003",
+            price: 29.99,
+            salePrice: 19.99,
+            stock: 0,
+            status: "inactive",
+            category: "Clothing",
+            image: "https://via.placeholder.com/100",
+            lowStockThreshold: 20,
+          },
+        ];
+        setProducts(mockProducts);
+        setLoading(false);
+      };
     fetchProducts();
   }, []);
-
-  const fetchProducts = async () => {
-    // Simulate API call
-    const mockProducts = [
-      {
-        id: 1,
-        name: "Wireless Headphones",
-        sku: "WH-001",
-        price: 99.99,
-        salePrice: 79.99,
-        stock: 45,
-        status: "active",
-        category: "Electronics",
-        image: "https://via.placeholder.com/100",
-        lowStockThreshold: 10,
-      },
-      {
-        id: 2,
-        name: "Smart Watch",
-        sku: "SW-002",
-        price: 199.99,
-        salePrice: null,
-        stock: 5,
-        status: "active",
-        category: "Electronics",
-        image: "https://via.placeholder.com/100",
-        lowStockThreshold: 10,
-      },
-      {
-        id: 3,
-        name: "Cotton T-Shirt",
-        sku: "CT-003",
-        price: 29.99,
-        salePrice: 19.99,
-        stock: 0,
-        status: "inactive",
-        category: "Clothing",
-        image: "https://via.placeholder.com/100",
-        lowStockThreshold: 20,
-      },
-    ];
-    setProducts(mockProducts);
-    setLoading(false);
-  };
 
   const getStockStatus = (stock, threshold) => {
     if (stock <= 0)

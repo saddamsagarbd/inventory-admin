@@ -4,114 +4,6 @@ import { UnitList } from "./units/components/UnitList";
 import { UnitForm } from "./units/components/UnitForm";
 import api from "../../config/axiosConfig";
 
-/* ─── MOCK DATA ───────────────────────────────── */
-const INITIAL_units = [
-  {
-    id: 1,
-    name: "Vegetables",
-    slug: "vegetables",
-    status: "active",
-    products: 142,
-    parent: null,
-    icon: "🥦",
-    description: "Fresh organic vegetables",
-    metaTitle: "Buy Fresh Vegetables Online",
-    metaDesc: "Shop the best organic vegetables.",
-    createdAt: "2024-01-15",
-  },
-  {
-    id: 2,
-    name: "Fruits",
-    slug: "fruits",
-    status: "active",
-    products: 98,
-    parent: null,
-    icon: "🍎",
-    description: "Seasonal and exotic fruits",
-    metaTitle: "Fresh Fruits Online",
-    metaDesc: "Order fresh fruits delivered.",
-    createdAt: "2024-01-18",
-  },
-  {
-    id: 3,
-    name: "Meat & Fish",
-    slug: "meat-fish",
-    status: "active",
-    products: 64,
-    parent: null,
-    icon: "🥩",
-    description: "Premium meat and seafood",
-    metaTitle: "Fresh Meat & Fish Delivery",
-    metaDesc: "Premium quality meat online.",
-    createdAt: "2024-02-01",
-  },
-  {
-    id: 4,
-    name: "Dairy",
-    slug: "dairy",
-    status: "active",
-    products: 47,
-    parent: null,
-    icon: "🥛",
-    description: "Fresh dairy products",
-    metaTitle: "Dairy Products Online",
-    metaDesc: "Fresh milk, cheese & more.",
-    createdAt: "2024-02-10",
-  },
-  {
-    id: 5,
-    name: "Leafy Greens",
-    slug: "leafy-greens",
-    status: "active",
-    products: 38,
-    parent: 1,
-    icon: "🥬",
-    description: "Spinach, lettuce, kale",
-    metaTitle: "Fresh Leafy Greens",
-    metaDesc: "Order leafy greens online.",
-    createdAt: "2024-02-20",
-  },
-  {
-    id: 6,
-    name: "Root Veggies",
-    slug: "root-veggies",
-    status: "inactive",
-    products: 22,
-    parent: 1,
-    icon: "🥕",
-    description: "Carrots, beetroot, radish",
-    metaTitle: "Root Vegetables Online",
-    metaDesc: "Buy root vegetables fresh.",
-    createdAt: "2024-03-01",
-  },
-  {
-    id: 7,
-    name: "Citrus Fruits",
-    slug: "citrus-fruits",
-    status: "active",
-    products: 18,
-    parent: 2,
-    icon: "🍊",
-    description: "Oranges, lemons, limes",
-    metaTitle: "Fresh Citrus Fruits",
-    metaDesc: "Vitamin C rich citrus fruits.",
-    createdAt: "2024-03-05",
-  },
-  {
-    id: 8,
-    name: "Bakery",
-    slug: "bakery",
-    status: "inactive",
-    products: 0,
-    parent_Unit: null,
-    icon: "🍞",
-    description: "Breads, cakes and pastries",
-    metaTitle: "Fresh Bakery Products",
-    metaDesc: "Freshly baked goods daily.",
-    createdAt: "2024-03-10",
-  },
-];
-
 /* ─── ROOT APP ────────────────────────────────── */
 export default function UnitManagement() {
   const [units, setUnits] = useState([]);
@@ -130,7 +22,6 @@ export default function UnitManagement() {
     setView("add");
   };
   const handleEdit = (unit) => {
-    console.log(unit);
     setEditData(unit);
     setView("edit");
   };
@@ -141,15 +32,21 @@ export default function UnitManagement() {
 
   const handleSave = async (formData) => {
 
-    console.log(formData);
-
     if (editData) {
       const result = await api.put(`/units/${editData.id}`, formData);
-      setUnits((units) => [...units, result.data.Unit]);
+      setUnits((units) => units.map((unit) => 
+        {
+          if(!result.data.unit) return false;
+          return unit.id === result.data.unit.id ? result.data.unit : unit
+        }
+      ));
     } else {
       const result = await api.post('/units/create', formData);
-      setUnits((units) => [...units, result.data.Unit]);
+      setUnits((units) => [...units, result.data.unit]);
     }
+
+    setView("list");
+
   };
 
   const handleDelete = (ids) => {

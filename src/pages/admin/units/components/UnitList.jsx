@@ -17,11 +17,15 @@ export const UnitList = ({ units, onEdit, onDelete, onAdd, showToast }) => {
     const [page, setPage] = useState(1);
     const PER_PAGE = 6;
 
+    console.log(units);
+
     const filtered = units
         .filter((c) => {
+            if (!c) return false;
+
             const matchSearch =
-                c.name.toLowerCase().includes(search.toLowerCase()) ||
-                c.slug.toLowerCase().includes(search.toLowerCase());
+                c.name?.toLowerCase().includes(search?.toLowerCase()) ||
+                c.slug?.toLowerCase().includes(search?.toLowerCase());
             const matchStatus = statusFilter === "all" || c.status === statusFilter;
             return matchSearch && matchStatus;
         })
@@ -67,20 +71,27 @@ export const UnitList = ({ units, onEdit, onDelete, onAdd, showToast }) => {
 
     const confirmDelete = () => {
         if (deleteModal === "single") {
-        onDelete([deleteTarget]);
-        showToast("unit deleted successfully.", "success");
+            onDelete([deleteTarget]);
+            showToast("unit deleted successfully.", "success");
         } else {
-        onDelete(selected);
-        showToast(`${selected.length} units deleted.`, "success");
-        setSelected([]);
+            onDelete(selected);
+            showToast(`${selected.length} units deleted.`, "success");
+            setSelected([]);
         }
         setDeleteModal(null);
         setDeleteTarget(null);
     };
 
-    const activeCount = units.filter((c) => c.status === "active").length;
+    const activeCount = units.filter((c) =>{
+        if (!c) return false;
+        return c.status === "active"
+    }).length;
+
     const inactiveCount = units.filter(
-        (c) => c.status === "inactive",
+        (c) => {
+            if (!c) return false;
+            return c.status === "inactive"
+        }
     ).length;
 
     return (

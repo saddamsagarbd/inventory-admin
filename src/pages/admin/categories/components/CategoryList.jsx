@@ -19,6 +19,7 @@ export const CategoryList = ({ categories, onEdit, onDelete, onAdd, showToast })
 
     const filtered = categories
         .filter((c) => {
+            if(!c) return false;
             const matchSearch =
                 c.name.toLowerCase().includes(search.toLowerCase()) ||
                 c.slug.toLowerCase().includes(search.toLowerCase());
@@ -78,9 +79,15 @@ export const CategoryList = ({ categories, onEdit, onDelete, onAdd, showToast })
         setDeleteTarget(null);
     };
 
-    const activeCount = categories.filter((c) => c.status === "active").length;
+    const activeCount = categories.filter((c) => {
+        if(!c) return false;
+        return c.status === "active"
+    }).length;
     const inactiveCount = categories.filter(
-        (c) => c.status === "inactive",
+        (c) => {
+            if(!c) return false;
+            return c.status === "inactive"
+        },
     ).length;
 
     return (
