@@ -1,7 +1,7 @@
 import React from "react";
 import ImageUploader from "./ImageUploader";
 
-const ProductForm = ({ activeTab, formData, setFormData }) => {
+const ProductForm = ({ activeTab, formData, setFormData, categories, units }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -15,7 +15,7 @@ const ProductForm = ({ activeTab, formData, setFormData }) => {
   const tabsContent = {
     basic: (
       <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Product Name *
@@ -42,6 +42,25 @@ const ProductForm = ({ activeTab, formData, setFormData }) => {
               required
             />
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Unit of Measures (UOM) *
+            </label>
+            <select
+              name="uom"
+              value={formData.uom}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border text-black border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+              <option value="">Select unit</option>
+              {
+                units.map(((unit) => {
+                  return <option key={unit.id} value={unit.id}>{unit.name} ({unit.shortName})</option>
+                }))
+              }
+            </select>
+          </div>
         </div>
 
         <div>
@@ -55,11 +74,12 @@ const ProductForm = ({ activeTab, formData, setFormData }) => {
             className="w-full px-4 py-2 border text-black border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           >
-            <option value="">Select Category</option>
-            <option value="Electronics">Electronics</option>
-            <option value="Clothing">Clothing</option>
-            <option value="Books">Books</option>
-            <option value="Home">Home & Garden</option>
+            <option value="">Select category</option>
+            {
+              categories.map(((category) => {
+                return <option key={category.id} value={category.id}>{category.code}-{category.name}</option>
+              }))
+            }
           </select>
         </div>
 

@@ -2,27 +2,23 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Save, X } from "lucide-react";
 import ProductForm from "./components/ProductForm";
+import api from "../../../config/axiosConfig";
 
 const AddEditProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [units, setUnits] = useState([]);
   const [activeTab, setActiveTab] = useState("basic");
   const [formData, setFormData] = useState({
     name: "",
     sku: "",
+    uom: "",
     category: "",
     description: "",
-    regularPrice: "",
-    salePrice: "",
-    cost: "",
-    stockQuantity: "",
-    lowStockThreshold: "",
     images: [],
     featuredImage: null,
-    slug: "",
-    metaTitle: "",
-    metaDescription: "",
     weight: "",
     dimensions: "",
     tags: [],
@@ -30,52 +26,75 @@ const AddEditProduct = () => {
 
   useEffect(() => {
     if (id) {
+
+      const fetchProduct = async () => {
+        setLoading(true);
+        // Mock API call
+        const mockProduct = {
+          name: "Wireless Headphones",
+          sku: "WH-001",
+          category: "Electronics",
+          description: "High-quality wireless headphones",
+          regularPrice: 99.99,
+          salePrice: 79.99,
+          cost: 45.0,
+          stockQuantity: 45,
+          lowStockThreshold: 10,
+          images: ["https://via.placeholder.com/400"],
+          featuredImage: "https://via.placeholder.com/400",
+          slug: "wireless-headphones",
+          metaTitle: "Best Wireless Headphones",
+          metaDescription: "Shop our premium wireless headphones",
+          weight: "0.5",
+          dimensions: "20x15x5",
+          tags: ["headphones", "wireless", "audio"],
+        };
+        setFormData(mockProduct);
+        setLoading(false);
+      };
       fetchProduct();
     }
   }, [id]);
 
-  const fetchProduct = async () => {
-    setLoading(true);
-    // Mock API call
-    const mockProduct = {
-      name: "Wireless Headphones",
-      sku: "WH-001",
-      category: "Electronics",
-      description: "High-quality wireless headphones",
-      regularPrice: 99.99,
-      salePrice: 79.99,
-      cost: 45.0,
-      stockQuantity: 45,
-      lowStockThreshold: 10,
-      images: ["https://via.placeholder.com/400"],
-      featuredImage: "https://via.placeholder.com/400",
-      slug: "wireless-headphones",
-      metaTitle: "Best Wireless Headphones",
-      metaDescription: "Shop our premium wireless headphones",
-      weight: "0.5",
-      dimensions: "20x15x5",
-      tags: ["headphones", "wireless", "audio"],
+  useEffect(() => {
+    const fetchCategories = async () => {
+      // Simulate API call
+      const result = await api.get('/category');
+      if(result.data.categories) setCategories(result.data.categories);
+      setLoading(false);
     };
-    setFormData(mockProduct);
-    setLoading(false);
-  };
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const fetchUnits = async () => {
+      // Simulate API call
+      const result = await api.get('/units');
+      if(result.data.units) setUnits(result.data.units);
+      setLoading(false);
+    };
+    fetchUnits();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     // API call to save
     console.log("Saving product:", formData);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setLoading(false);
-    navigate("/admin/products");
+    const result = await api.post('/item/create', formData);
+    console.log(result.data);
+    return;
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // setLoading(false);
+    // if(result.data.product) navigate("/admin/products");
   };
 
   const tabs = [
     { id: "basic", label: "Basic Info", icon: "📝" },
-    { id: "pricing", label: "Pricing", icon: "💰" },
-    { id: "inventory", label: "Inventory", icon: "📦" },
+    // { id: "pricing", label: "Pricing", icon: "💰" },
+    // { id: "inventory", label: "Inventory", icon: "📦" },
     { id: "images", label: "Images", icon: "🖼️" },
-    { id: "seo", label: "SEO", icon: "🔍" },
+    // { id: "seo", label: "SEO", icon: "🔍" },
     { id: "additional", label: "Additional", icon: "⚙️" },
   ];
 
@@ -130,6 +149,8 @@ const AddEditProduct = () => {
             activeTab={activeTab}
             formData={formData}
             setFormData={setFormData}
+            categories={categories}
+            units={units}
           />
 
           {/* Action Buttons */}

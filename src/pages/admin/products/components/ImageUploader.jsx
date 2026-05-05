@@ -3,13 +3,13 @@ import { Upload, X } from "lucide-react";
 
 const ImageUploader = ({ formData, setFormData }) => {
   const onDrop = useCallback((e) => {
-    const files = Array.from(e.target.files);
-    const newImages = files.map((file) => URL.createObjectURL(file));
+    const files = e.target.files;
+    const newImages = Array.from(files).map((file) => URL.createObjectURL(file));
     setFormData((prev) => ({
       ...prev,
       images: [...prev.images, ...newImages],
     }));
-  }, []);
+  }, [setFormData]);
 
   const removeImage = (index) => {
     setFormData((prev) => ({

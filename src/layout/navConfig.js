@@ -63,7 +63,7 @@ export const NAV = [
       },
       {
         id: "product",
-        label: "Product",
+        label: "Product Master",
         icon: "📦",
         path: "/admin/products",
       },
