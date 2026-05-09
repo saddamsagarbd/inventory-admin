@@ -293,82 +293,82 @@ export const CategoryForm = ({ categories, editData, onSave, onCancel, showToast
             {/* ── IMAGE TAB ── */}
             {activeTab === "image" && (
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col gap-6">
-                <h3 className="font-bold text-gray-800 text-sm">
-                    Category Image / Icon
-                </h3>
+                    <h3 className="font-bold text-gray-800 text-sm">
+                        Category Image / Icon
+                    </h3>
 
-                {/* Icon Picker */}
-                <div className="flex flex-col gap-2">
-                    <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    Choose Icon Emoji
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                    {ICONS.map((ic) => (
-                        <button
-                        key={ic}
-                        onClick={() => set("icon", ic)}
-                        className={cn(
-                            "w-11 h-11 rounded-xl text-xl transition-all border",
-                            form.icon === ic
-                            ? "bg-green-100 border-green-400 scale-110 shadow"
-                            : "bg-gray-50 border-gray-200 hover:border-green-300 hover:bg-green-50",
-                        )}
+                    {/* Icon Picker */}
+                    <div className="flex flex-col gap-2">
+                        <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                        Choose Icon Emoji
+                        </label>
+                        <div className="flex flex-wrap gap-2">
+                        {ICONS.map((ic) => (
+                            <button
+                            key={ic}
+                            onClick={() => set("icon", ic)}
+                            className={cn(
+                                "w-11 h-11 rounded-xl text-xl transition-all border",
+                                form.icon === ic
+                                ? "bg-green-100 border-green-400 scale-110 shadow"
+                                : "bg-gray-50 border-gray-200 hover:border-green-300 hover:bg-green-50",
+                            )}
+                            >
+                            {ic}
+                            </button>
+                        ))}
+                        </div>
+                    </div>
+
+                    {/* Image Upload */}
+                    <div className="flex flex-col gap-2">
+                        <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                        Upload Category Image
+                        </label>
+                        <div
+                        onClick={() => fileInputRef.current?.click()}
+                        className="relative border-2 border-dashed border-gray-200 hover:border-green-400 rounded-2xl p-8 flex flex-col items-center gap-3 cursor-pointer transition-all group"
                         >
-                        {ic}
-                        </button>
-                    ))}
-                    </div>
-                </div>
-
-                {/* Image Upload */}
-                <div className="flex flex-col gap-2">
-                    <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    Upload Category Image
-                    </label>
-                    <div
-                    onClick={() => fileInputRef.current?.click()}
-                    className="relative border-2 border-dashed border-gray-200 hover:border-green-400 rounded-2xl p-8 flex flex-col items-center gap-3 cursor-pointer transition-all group"
-                    >
-                    {imagePreview ? (
-                        <img
-                        src={imagePreview}
-                        alt="Preview"
-                        className="w-32 h-32 object-cover rounded-xl"
+                        {imagePreview ? (
+                            <img
+                            src={imagePreview}
+                            alt="Preview"
+                            className="w-32 h-32 object-cover rounded-xl"
+                            />
+                        ) : (
+                            <>
+                            <div className="w-14 h-14 rounded-2xl bg-green-50 group-hover:bg-green-100 flex items-center justify-center text-2xl transition-colors">
+                                📁
+                            </div>
+                            <div className="text-center">
+                                <p className="text-sm font-semibold text-gray-700">
+                                Click to upload
+                                </p>
+                                <p className="text-xs text-gray-400 mt-1">
+                                PNG, JPG, WEBP up to 2MB
+                                </p>
+                            </div>
+                            </>
+                        )}
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={handleImageChange}
                         />
-                    ) : (
-                        <>
-                        <div className="w-14 h-14 rounded-2xl bg-green-50 group-hover:bg-green-100 flex items-center justify-center text-2xl transition-colors">
-                            📁
                         </div>
-                        <div className="text-center">
-                            <p className="text-sm font-semibold text-gray-700">
-                            Click to upload
-                            </p>
-                            <p className="text-xs text-gray-400 mt-1">
-                            PNG, JPG, WEBP up to 2MB
-                            </p>
-                        </div>
-                        </>
-                    )}
-                    <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={handleImageChange}
-                    />
+                        {imagePreview && (
+                        <Btn
+                            variant="secondary"
+                            size="sm"
+                            className="w-fit"
+                            onClick={() => setImagePreview(null)}
+                        >
+                            ✕ Remove Image
+                        </Btn>
+                        )}
                     </div>
-                    {imagePreview && (
-                    <Btn
-                        variant="secondary"
-                        size="sm"
-                        className="w-fit"
-                        onClick={() => setImagePreview(null)}
-                    >
-                        ✕ Remove Image
-                    </Btn>
-                    )}
-                </div>
                 </div>
             )}
 

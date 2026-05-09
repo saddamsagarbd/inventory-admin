@@ -12,17 +12,54 @@ const AddEditProduct = () => {
   const [units, setUnits] = useState([]);
   const [activeTab, setActiveTab] = useState("basic");
   const [formData, setFormData] = useState({
-    name: "",
+    title: "",
     sku: "",
     uom: "",
     category: "",
     description: "",
     images: [],
+    imagePreviews: [],
     featuredImage: null,
     weight: "",
     dimensions: "",
     tags: [],
   });
+
+  const handleSubmit = async (e) => {
+      e.preventDefault();
+      setLoading(true);
+
+      const newFormData = new FormData();
+
+      Object.keys(formData).forEach((key) => {
+          const value = formData[key];
+
+          if (value === undefined || value === null || value === '') return;
+
+          if (key === "images" && Array.isArray(value)) {
+              
+              value.forEach((file, index) => {
+                  if (file instanceof File) {
+                      newFormData.append("files", file);
+                  } else {
+                      console.warn(`❌ Item ${index} is NOT a File:`, file);
+                  }
+              });
+          } else {
+              newFormData.append(key, value);
+          }
+      });
+
+      // Final check
+      try {
+          const result = await api.post('/item/create', newFormData);
+          console.log("Response:", result.data);
+      } catch (error) {
+          console.error("Error:", error.response?.data || error);
+      } finally {
+          setLoading(false);
+      }
+  };
 
   useEffect(() => {
     if (id) {
@@ -75,19 +112,6 @@ const AddEditProduct = () => {
     };
     fetchUnits();
   }, []);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    // API call to save
-    console.log("Saving product:", formData);
-    const result = await api.post('/item/create', formData);
-    console.log(result.data);
-    return;
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // setLoading(false);
-    // if(result.data.product) navigate("/admin/products");
-  };
 
   const tabs = [
     { id: "basic", label: "Basic Info", icon: "📝" },

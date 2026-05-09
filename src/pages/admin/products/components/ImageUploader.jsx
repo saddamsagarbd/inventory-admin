@@ -4,11 +4,19 @@ import { Upload, X } from "lucide-react";
 const ImageUploader = ({ formData, setFormData }) => {
   const onDrop = useCallback((e) => {
     const files = e.target.files;
-    const newImages = Array.from(files).map((file) => URL.createObjectURL(file));
+    
+    if (!files || files.length === 0) return;
+
+    const selectedFiles = Array.from(files);                    // ← Real File objects
+    const previewUrls = selectedFiles.map(file => URL.createObjectURL(file));
+
     setFormData((prev) => ({
       ...prev,
-      images: [...prev.images, ...newImages],
+      images: [...prev.images, ...selectedFiles],
+      imagePreviews: [...(prev.imagePreviews || []), ...previewUrls]
     }));
+
+    e.target.value = '';
   }, [setFormData]);
 
   const removeImage = (index) => {
@@ -52,13 +60,13 @@ const ImageUploader = ({ formData, setFormData }) => {
         </div>
       </div>
 
-      {formData.images.length > 0 && (
+      {formData.imagePreviews.length > 0 && (
         <div>
           <h4 className="text-sm font-medium text-gray-700 mb-3">
             Image Gallery
           </h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {formData.images.map((img, index) => (
+            {formData.imagePreviews.map((img, index) => (
               <div key={index} className="relative group">
                 <img
                   src={img}
